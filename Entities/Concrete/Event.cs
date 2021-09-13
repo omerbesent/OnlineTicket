@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Entities.Concrete
 {
@@ -24,10 +25,13 @@ namespace Entities.Concrete
         public int? UpdatedBy { get; set; }
         public bool? Active { get; set; }
 
-
+        [JsonIgnore]
         public Place Place { get; set; }
+        [JsonIgnore]
         public Category Category { get; set; }
+        [JsonIgnore]
         public ICollection<Session> Sessions { get; set; }
+        [JsonIgnore]
         public ICollection<EventSelectedSeat> EventSelectedSeats { get; set; }
     }
 }

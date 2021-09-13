@@ -7,13 +7,13 @@ namespace Business.Abstract
     public interface IEventService
     {
         IDataResult<List<Event>> GetAll();
-        //List<Event> GetListByCategoryId(int categoryId);
-        //Event Get(int evntId);
-        //int Add(Event evnt);
-        //bool Update(Event evnt);
-        //bool Delete(int evntId);
-        //IList<EventSelectedSeat> GetSelectedSeatsByEvent(int evntId);
-        //void SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave);
-        //void SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete);
+        IDataResult<List<Event>> GetListByCategoryId(int categoryId);
+        IDataResult<Event> Get(int eventId);
+        IResult Add(Event evnt);
+        IResult Update(Event evnt);
+        IResult Delete(int evntId);
+        //IDataResult<List<EventSelectedSeat>> GetSelectedSeatsByEvent(int evntId);
+        //IResult SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave);
+        //IResult SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Entities.Concrete
 {
@@ -21,9 +22,11 @@ namespace Entities.Concrete
         public DateTime? UpdateDate { get; set; }
         public int? UpdatedBy { get; set; }
 
-
+        [JsonIgnore]
         public City City { get; set; }
+        [JsonIgnore]
         public County County { get; set; }
+        [JsonIgnore]
         public ICollection<Event> Events { get; set; }
 
         //CreatedBy ve UpdatedBy dan daha sonra int? yerine int olacak

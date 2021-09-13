@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Entities.Concrete
 {
@@ -16,6 +17,7 @@ namespace Entities.Concrete
         public int? UpdatedBy { get; set; }
         public int? Ranking { get; set; }
 
+        [JsonIgnore]
         public ICollection<Event> Events { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Entities.Concrete
 {
@@ -14,6 +15,7 @@ namespace Entities.Concrete
         public DateTime? CreateDate { get; set; }
         public int? CreatedBy { get; set; }
 
+        [JsonIgnore]
         public Event Event { get; set; }
     }
 }

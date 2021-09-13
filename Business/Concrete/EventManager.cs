@@ -11,103 +11,97 @@ namespace Business.Concrete
     public class EventManager : IEventService
     {
         private IEventDal _eventDal;
-        //private ICategoryDal _categoryDal;
         //private IEventSelectedSeatDal _evntSelectedSeatDal;
         //public EventManager(IEventDal eventDal, IEventSelectedSeatDal evntSelectedSeatDal)
         public EventManager(IEventDal eventDal)
         {
             _eventDal = eventDal;
-            //_categoryDal = categoryDal;
             //_evntSelectedSeatDal = evntSelectedSeatDal;
         }
 
-        public int Add(Event evnt)
+        public IResult Add(Event evnt)
         {
-            try
-            {
-                return _eventDal.Add(evnt);
-                //return true;
-            }
-            catch (Exception exc)
-            {
-                return -1;
-            }
+            //checklik bir durum varsa
+            //var result = BusinessRules.Run(
+            //    CheckIfProductCountOfCategoryCorrect(product.CategoryId),
+            //    CheckIfProductNameExists(product.ProductName),
+            //    CheckIfCategoryLimitExceded()
+            //    );
+            //if (result != null)
+            //{
+            //    return result;
+            //}
+
+            _eventDal.Add(evnt);
+            return new SuccessResult(Messages.EventAdded);
         }
 
-        public bool Delete(int evntId)
+        public IResult Delete(int evntId)
         {
-            try
-            {
-                _eventDal.Delete(new Event { EventId = evntId });
-                return true;
-            }
-            catch (Exception exc)
-            {
-                return false;
-            }
-        }
-        public Event Get(int evntId)
-        {
-            return _eventDal.GetFull(x => x.EventId == evntId);
+            //checklik bir durum varsa
+            //var result = BusinessRules.Run(
+            //    CheckIfProductCountOfCategoryCorrect(product.CategoryId),
+            //    CheckIfProductNameExists(product.ProductName),
+            //    CheckIfCategoryLimitExceded()
+            //    );
+            //if (result != null)
+            //{
+            //    return result;
+            //}
+
+            var evnt = _eventDal.Get(x => x.EventId == evntId);
+            _eventDal.Delete(evnt);
+            return new SuccessResult(Messages.EventDeleted);
         }
 
-        IDataResult<List<Event>> GetAll()
+        public IDataResult<Event> Get(int eventId)
+        {
+            return new SuccessDataResult<Event>(_eventDal.GetFull(x => x.EventId == eventId), Messages.EventsListed);
+        }
+
+        public IDataResult<List<Event>> GetAll()
         {
             return new SuccessDataResult<List<Event>>(_eventDal.GetListFull(), Messages.EventsListed);
         }
 
-        public List<Event> GetListByCategoryId(int categoryId)
+        public IDataResult<List<Event>> GetListByCategoryId(int categoryId)
         {
-            //var category = _categoryDal.Get(x => x.CategoryId == categoryId);
-            //_categoryDal.GetList(x => x.MainCategoryId == categoryId).Select(x => x.CategoryId).ToArray();
-            return _eventDal.GetListFull(x => x.CategoryId.Value == categoryId);
+            return new SuccessDataResult<List<Event>>(_eventDal.GetListFull(x => x.CategoryId.Value == categoryId), Messages.EventsListed);
         }
 
-        public IList<EventSelectedSeat> GetSelectedSeatsByEvent(int evntId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public IList<EventSelectedSeat> GetSelectedSeatsByEvent(int evntId)
+        //public IDataResult<List<EventSelectedSeat>> GetSelectedSeatsByEvent(int evntId)
         //{
-        //    var evntSelectedSeats = _evntSelectedSeatDal.GetList(x => x.EventId == evntId);
-        //    return evntSelectedSeats;
+        //    return new SuccessDataResult<List<EventSelectedSeat>>(_evntSelectedSeatDal.GetList(x => x.EventId == evntId), Messages.SeatsListed); 
         //}
 
-        //public void SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave)
+        //public IResult SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave)
         //{
         //    var deleteSelectedSeats = _evntSelectedSeatDal.GetList(x => x.EventId == evntSelectedsSave[0].EventId);
         //    _evntSelectedSeatDal.AddAll(evntSelectedsSave, deleteSelectedSeats.ToArray());
+        //    return new SuccessResult(Messages.SelectedSeatsAdded);
         //}
 
-        //public void SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete)
+        //public IResult SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete)
         //{
         //    _evntSelectedSeatDal.DeleteAll(evntSelectedsDelete);
+        //    return new SuccessResult(Messages.SelectedSeatsDeleted);
         //}
 
-        public bool Update(Event evnt)
+        public IResult Update(Event evnt)
         {
-            try
-            {
-                _eventDal.Update(evnt);
-                return true;
-            }
-            catch (Exception exc)
-            {
-                return false;
-            }
+            //checklik bir durum varsa
+            //var result = BusinessRules.Run(
+            //    CheckIfProductCountOfCategoryCorrect(product.CategoryId),
+            //    CheckIfProductNameExists(product.ProductName),
+            //    CheckIfCategoryLimitExceded()
+            //    );
+            //if (result != null)
+            //{
+            //    return result;
+            //}
+
+            _eventDal.Update(evnt);
+            return new SuccessResult(Messages.EventUpdated);
         }
-
-
     }
 }

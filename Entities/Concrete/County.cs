@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Entities.Concrete
 {
@@ -9,6 +10,7 @@ namespace Entities.Concrete
         public string CountyName { get; set; }
         public int CityId { get; set; }
 
+        [JsonIgnore]
         public ICollection<Place> Places { get; set; }
     }
 }
