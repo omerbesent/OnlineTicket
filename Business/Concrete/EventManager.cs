@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constans;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -19,6 +21,7 @@ namespace Business.Concrete
             //_evntSelectedSeatDal = evntSelectedSeatDal;
         }
 
+        [CacheRemoveAspect("IEventService.Get")]
         public IResult Add(Event evnt)
         {
             //checklik bir durum varsa
@@ -36,6 +39,25 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EventAdded);
         }
 
+        [CacheRemoveAspect("IEventService.Get")]
+        public IResult Update(Event evnt)
+        {
+            //checklik bir durum varsa
+            //var result = BusinessRules.Run(
+            //    CheckIfProductCountOfCategoryCorrect(product.CategoryId),
+            //    CheckIfProductNameExists(product.ProductName),
+            //    CheckIfCategoryLimitExceded()
+            //    );
+            //if (result != null)
+            //{
+            //    return result;
+            //}
+
+            _eventDal.Update(evnt);
+            return new SuccessResult(Messages.EventUpdated);
+        }
+
+        [CacheRemoveAspect("IEventService.Get")]
         public IResult Delete(int evntId)
         {
             //checklik bir durum varsa
@@ -59,6 +81,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Event>(_eventDal.GetFull(x => x.EventId == eventId), Messages.EventsListed);
         }
 
+        [CacheAspect] //key,value
         public IDataResult<List<Event>> GetAll()
         {
             return new SuccessDataResult<List<Event>>(_eventDal.GetListFull(), Messages.EventsListed);
@@ -81,27 +104,11 @@ namespace Business.Concrete
         //    return new SuccessResult(Messages.SelectedSeatsAdded);
         //}
 
+        //[TransactionScopeAspect]
         //public IResult SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete)
         //{
         //    _evntSelectedSeatDal.DeleteAll(evntSelectedsDelete);
         //    return new SuccessResult(Messages.SelectedSeatsDeleted);
-        //}
-
-        public IResult Update(Event evnt)
-        {
-            //checklik bir durum varsa
-            //var result = BusinessRules.Run(
-            //    CheckIfProductCountOfCategoryCorrect(product.CategoryId),
-            //    CheckIfProductNameExists(product.ProductName),
-            //    CheckIfCategoryLimitExceded()
-            //    );
-            //if (result != null)
-            //{
-            //    return result;
-            //}
-
-            _eventDal.Update(evnt);
-            return new SuccessResult(Messages.EventUpdated);
-        }
+        //} 
     }
 }
