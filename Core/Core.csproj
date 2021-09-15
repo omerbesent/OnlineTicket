@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Aspects\Autofac\Performance\" />
+    <Folder Include="Entities\DTOs\" />
   </ItemGroup>
 
 </Project>
