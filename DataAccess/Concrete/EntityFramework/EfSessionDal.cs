@@ -28,5 +28,16 @@ namespace DataAccess.Concrete.EntityFramework
                 return true;
             }
         }
+
+        public bool DeleteAll(Session[] entityDelete)
+        {
+            using (var context = new OnlineTicketContext())
+            {
+                context.RemoveRange(entityDelete);
+                context.SaveChanges();
+
+                return true;
+            }
+        }
     }
 }

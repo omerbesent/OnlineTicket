@@ -13,16 +13,19 @@ namespace Business.Concrete
     public class EventManager : IEventService
     {
         private IEventDal _eventDal;
+        private ISessionDal _sessionDal;
         //private IEventSelectedSeatDal _evntSelectedSeatDal;
         //public EventManager(IEventDal eventDal, IEventSelectedSeatDal evntSelectedSeatDal)
-        public EventManager(IEventDal eventDal)
+        public EventManager(IEventDal eventDal, ISessionDal sessionDal)
         {
             _eventDal = eventDal;
+            _sessionDal = sessionDal;
             //_evntSelectedSeatDal = evntSelectedSeatDal;
         }
 
         [CacheRemoveAspect("IEventService.Get")]
-        public IResult Add(Event evnt)
+        [TransactionScopeAspect]
+        public IResult Add(Event evnt, Session[] sessions)
         {
             //checklik bir durum varsa
             //var result = BusinessRules.Run(
@@ -36,6 +39,8 @@ namespace Business.Concrete
             //}
 
             _eventDal.Add(evnt);
+            _sessionDal.AddAll(sessions);
+
             return new SuccessResult(Messages.EventAdded);
         }
 
@@ -71,8 +76,11 @@ namespace Business.Concrete
             //    return result;
             //}
 
+            var sessions = _sessionDal.GetList(x => x.EventId == evntId);
             var evnt = _eventDal.Get(x => x.EventId == evntId);
+            _sessionDal.DeleteAll(sessions.ToArray());
             _eventDal.Delete(evnt);
+
             return new SuccessResult(Messages.EventDeleted);
         }
 

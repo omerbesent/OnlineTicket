@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -17,15 +18,37 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
-            //IProductService productService = new ProductManager(new EfProductDal());
-
             var result = _eventService.GetAll();
-            return Ok(result);
-            //if (result.Success)
-            //{
-            //    return Ok(result);
-            //}
-            //return BadRequest(result);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
+
+        [HttpGet("get")]
+        public IActionResult Get(int eventId)
+        {
+            //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
+            var result = _eventService.Get(eventId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("save")]
+        public IActionResult Save(Event evnt, Session[] sessions)
+        {
+            //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
+            var result = _eventService.Add(evnt,sessions);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
     }
 }

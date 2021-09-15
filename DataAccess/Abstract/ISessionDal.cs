@@ -8,5 +8,6 @@ namespace DataAccess.Abstract
         //Custom Operations
         public bool AddAll(Session[] entitySave);
         public bool UpdateAll(Session[] entitySave, Session[] entityDelete);
+        public bool DeleteAll(Session[] entityDelete);
     }
 }
