@@ -11,7 +11,7 @@ namespace Core.Entities.Concrete
         public string MobilePhone { get; set; }
         public DateTime? BirthDate { get; set; }
         public byte Gender { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool Status { get; set; }

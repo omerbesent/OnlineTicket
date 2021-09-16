@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Entities.Concrete;
 using System;
 using System.IO;
+using Core.Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -18,6 +19,10 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<EventSelectedSeat> EventSelectedSeats { get; set; }
         public DbSet<Poster> Posters { get; set; }
         public DbSet<UserSelectedSeat> UserSelectedSeats { get; set; }
+
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
