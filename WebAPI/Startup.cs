@@ -1,4 +1,5 @@
 using Core.DependencyResolvers;
+using Core.Entities.Concrete;
 using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
@@ -61,7 +62,7 @@ namespace WebAPI
                     };
                 });
             //ServiceTool.Create(services);
-
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
         }
 

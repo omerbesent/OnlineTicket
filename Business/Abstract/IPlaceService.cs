@@ -1,14 +1,15 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System.Collections.Generic;
 
 namespace Business.Abstract
 {
     public interface IPlaceService
     {
-        List<Place> GetAll();
-        Place Get(int placeId);
-        void Add(Place place);
-        void Update(Place place);
-        void Delete(int placeId);
+        IDataResult<List<Place>> GetAll();
+        IDataResult<Place> Get(int placeId);
+        IResult Add(Place place);
+        IResult Update(Place place);
+        IResult Delete(int placeId);
     }
 }

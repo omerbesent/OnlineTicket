@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,11 @@ namespace WebAPI.Controllers
     public class EventsController : ControllerBase
     {
         IEventService _eventService;
-        public EventsController(IEventService eventService)
+        IMailService _mailService;
+        public EventsController(IEventService eventService, IMailService mailService)
         {
             _eventService = eventService;
+            _mailService = mailService;
         }
 
         [HttpGet("getall")]
@@ -49,6 +52,20 @@ namespace WebAPI.Controllers
         //    }
         //    return BadRequest(result);
         //}
+
+        [HttpGet("sendmail")]
+        public IActionResult SendMail()
+        {
+            MailRequest mailRequest = new MailRequest();
+            mailRequest.ToEmail = "omer.besent@hotmail.com";
+            mailRequest.Subject = "Test email";
+            mailRequest.Body = "mail içerik";
+
+            _mailService.SendEmailAsync(mailRequest);
+
+            return Ok("Mail gönderildi");
+           
+        }
 
     }
 }

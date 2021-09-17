@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constans;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
@@ -13,29 +15,34 @@ namespace Business.Concrete
             _placeDal = placeDal;
         }
 
-        public void Add(Place place)
+        public IResult Add(Place place)
         {
             _placeDal.Add(place);
+            return new SuccessResult(Messages.PlaceAdded);
         }
 
-        public void Update(Place place)
+        public IResult Update(Place place)
         {
             _placeDal.Update(place);
+            return new SuccessResult(Messages.PlaceUpdated);
         }
 
-        public void Delete(int placeId)
+        public IResult Delete(int placeId)
         {
-            _placeDal.Delete(new Place { PlaceId = placeId });
+            var deleted = _placeDal.Get(x => x.PlaceId == placeId);
+            _placeDal.Delete(deleted);
+            return new SuccessResult(Messages.PlaceDeleted);
         }
 
-        public List<Place> GetAll()
+        public IDataResult<Place> Get(int placeId)
         {
-            return _placeDal.GetListFull();
+            return new SuccessDataResult<Place>(_placeDal.GetFull(x => x.PlaceId == placeId), Messages.PlacesListed);
         }
 
-        public Place Get(int placeId)
+        public IDataResult<List<Place>> GetAll()
         {
-            return _placeDal.GetFull(x => x.PlaceId == placeId);
+            return new SuccessDataResult<List<Place>>(_placeDal.GetListFull(), Messages.PlacesListed);
         }
+
     }
 }

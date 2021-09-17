@@ -36,14 +36,16 @@ namespace Business.DependencyResolvers.Autofac
             //builder.RegisterType<PosterManager>().As<IPosterService>().SingleInstance();
             //builder.RegisterType<EfPosterDal>().As<IPosterDal>().SingleInstance();
 
-            //builder.RegisterType<SessionManager>().As<ISessionService>().SingleInstance();
-            //builder.RegisterType<EfSessionDal>().As<ISessionDal>().SingleInstance();
+            builder.RegisterType<SessionManager>().As<ISessionService>().SingleInstance();
+            builder.RegisterType<EfSessionDal>().As<ISessionDal>().SingleInstance();
 
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+            builder.RegisterType<MailManager>().As<IMailService>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
