@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,10 +13,12 @@ namespace WebAPI.Controllers
     {
         IEventService _eventService;
         IMailService _mailService;
-        public EventsController(IEventService eventService, IMailService mailService)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public EventsController(IEventService eventService, IMailService mailService, IHostingEnvironment hostingEnvironment)
         {
             _eventService = eventService;
             _mailService = mailService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet("getall")]
@@ -56,15 +60,20 @@ namespace WebAPI.Controllers
         [HttpGet("sendmail")]
         public IActionResult SendMail()
         {
-            MailRequest mailRequest = new MailRequest();
-            mailRequest.ToEmail = "omer.besent@hotmail.com";
-            mailRequest.Subject = "Test email";
-            mailRequest.Body = "mail içerik";
+            string filePath = string.Format("{0}\\MailTemplate\\Register.html", _hostingEnvironment.ContentRootPath);
+            var htmlFile = System.IO.File.ReadAllText(filePath);
+            //MailRequest mailRequest = new MailRequest();
+            //mailRequest.ToEmail = "omer.besent@hotmail.com";
+            //mailRequest.Subject = "Test email";
+            //mailRequest.Body = "mail içerik";
 
-            _mailService.SendEmailAsync(mailRequest);
+            var result = _mailService.SendRegisterEmail("omer.besent@hotmail.com", "Omer Besent", htmlFile, "#");
 
-            return Ok("Mail gönderildi");
-           
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
     }

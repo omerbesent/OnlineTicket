@@ -38,5 +38,7 @@ namespace Business.Constans
         public static string PlaceAdded = "Mekan oluşturuldu";
         public static string PlaceUpdated = "Mekan güncellendi";
         public static string PlaceDeleted = "Mekan silindi";
+
+        public static string EmailSended = "Email gönderildi";
     }
 }

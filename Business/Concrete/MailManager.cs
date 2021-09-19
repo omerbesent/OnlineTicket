@@ -1,9 +1,12 @@
 ﻿using Business.Abstract;
+using Business.Constans;
 using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -47,6 +50,27 @@ namespace Business.Concrete
             smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
+        }
+
+        public IResult SendRegisterEmail(string email, string name, string body, string confirmLink)
+        {
+            try
+            {
+                body = body.Replace("[NAME]", name);
+                body = body.Replace("[CONFIRM_URL]", name);
+                
+                MailRequest mailRequest = new MailRequest();
+                mailRequest.ToEmail = email;
+                mailRequest.Subject = "Üyelik işlemi";
+                mailRequest.Body = body;
+                SendEmailAsync(mailRequest);
+
+                return new SuccessResult(Messages.EmailSended);
+            }
+            catch (Exception exc)
+            {
+                return new ErrorResult(exc.GetBaseException().Message);
+            }
         }
     }
 }
