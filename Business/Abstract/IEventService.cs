@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.DTOs;
 using System.Collections.Generic;
 
 namespace Business.Abstract
@@ -9,11 +10,8 @@ namespace Business.Abstract
         IDataResult<List<Event>> GetAll();
         IDataResult<List<Event>> GetListByCategoryId(int categoryId);
         IDataResult<Event> Get(int eventId);
-        IResult Add(Event evnt, Session[] sessions);
-        IResult Update(Event evnt);
-        IResult Delete(int evntId);
-        //IDataResult<List<EventSelectedSeat>> GetSelectedSeatsByEvent(int evntId);
-        //IResult SelectedSeatsAddAll(EventSelectedSeat[] evntSelectedsSave);
-        //IResult SelectedSeatsDeleteAll(EventSelectedSeat[] evntSelectedsDelete);
+        IResult Add(EventDto eventDto);
+        IResult Update(EventDto eventDto);
+        IResult Delete(int evntId); 
     }
 }

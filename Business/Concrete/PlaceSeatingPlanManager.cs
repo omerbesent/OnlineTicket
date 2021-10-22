@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.Constans;
+using Core.Aspects.Autofac.Transaction;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System.Collections.Generic;
@@ -13,45 +16,52 @@ namespace Business.Concrete
             _placeSeatingPlanDal = placeSeatingPlanDal;
         }
 
-
-        public void Add(PlaceSeatingPlan placeSeatingPlan)
+        public IResult Add(PlaceSeatingPlan placeSeatingPlan)
         {
             _placeSeatingPlanDal.Add(placeSeatingPlan);
+            return new SuccessResult(Messages.PlaceSeatingPlanAdded);
         }
 
-        public void AddAll(PlaceSeatingPlan[] placeSeatingPlansSave, PlaceSeatingPlan[] placeSeatingPlansDelete)
-        {
-            _placeSeatingPlanDal.AddAll(placeSeatingPlansSave, placeSeatingPlansDelete);
-        }
-
-        public void Delete(int placeSeatingPlanId)
-        {
-            _placeSeatingPlanDal.Delete(new PlaceSeatingPlan { PlaceSeatingPlanId = placeSeatingPlanId });
-        }
-
-        public void DeleteAll(PlaceSeatingPlan[] placeSeatingPlansDelete)
+        [TransactionScopeAspect]
+        public IResult AddAll(PlaceSeatingPlan[] placeSeatingPlansSave, PlaceSeatingPlan[] placeSeatingPlansDelete)
         {
             _placeSeatingPlanDal.DeleteAll(placeSeatingPlansDelete);
+            _placeSeatingPlanDal.AddAll(placeSeatingPlansSave);
+            return new SuccessResult(Messages.PlaceSeatingPlanAdded);
         }
 
-        public PlaceSeatingPlan Get(int placeId)
+        public IResult Delete(int placeSeatingPlanId)
         {
-            return _placeSeatingPlanDal.Get(x => x.PlaceSeatingPlanId == placeId);
+            _placeSeatingPlanDal.Delete(new PlaceSeatingPlan { PlaceSeatingPlanId = placeSeatingPlanId });
+            return new SuccessResult(Messages.PlaceSeatingPlanDeleted);
         }
 
-        public List<PlaceSeatingPlan> GetAll()
+        public IResult DeleteAll(PlaceSeatingPlan[] placeSeatingPlansDelete)
         {
-            return _placeSeatingPlanDal.GetList();
+            _placeSeatingPlanDal.DeleteAll(placeSeatingPlansDelete);
+            return new SuccessResult(Messages.PlaceSeatingPlanDeleted);
         }
 
-        public List<PlaceSeatingPlan> GetByPlace(int placeId)
+        public IDataResult<PlaceSeatingPlan> Get(int placeSeatingPlanId)
         {
-            return _placeSeatingPlanDal.GetList(x => x.PlaceId == placeId);
+            return new SuccessDataResult<PlaceSeatingPlan>(_placeSeatingPlanDal.Get(x => x.PlaceSeatingPlanId == placeSeatingPlanId), Messages.PlaceSeatingPlanListed);
         }
 
-        public void Update(PlaceSeatingPlan placeSeatingPlan)
+        public IDataResult<List<PlaceSeatingPlan>> GetAll()
+        {
+            return new SuccessDataResult<List<PlaceSeatingPlan>>(_placeSeatingPlanDal.GetList(), Messages.PlaceSeatingPlanListed);
+        }
+
+        public IDataResult<List<PlaceSeatingPlan>> GetByPlace(int placeId)
+        {
+            return new SuccessDataResult<List<PlaceSeatingPlan>>(_placeSeatingPlanDal.GetList(x => x.PlaceId == placeId), Messages.PlaceSeatingPlanListed);
+        }
+
+        public IResult Update(PlaceSeatingPlan placeSeatingPlan)
         {
             _placeSeatingPlanDal.Update(placeSeatingPlan);
+            return new SuccessResult(Messages.PlaceSeatingPlanUpdated);
         }
+         
     }
 }

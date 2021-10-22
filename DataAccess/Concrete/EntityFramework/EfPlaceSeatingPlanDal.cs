@@ -6,11 +6,10 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfPlaceSeatingPlanDal : EfEntityRepositoryBase<PlaceSeatingPlan, OnlineTicketContext>, IPlaceSeatingPlanDal
     {
-        public void AddAll(PlaceSeatingPlan[] entitySave, PlaceSeatingPlan[] entityDelete)
+        public void AddAll(PlaceSeatingPlan[] entitySave)
         {
             using (var context = new OnlineTicketContext())
             {
-                context.RemoveRange(entityDelete);
                 foreach (var item in entitySave)
                 {
                     context.Add(item);

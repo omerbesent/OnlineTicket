@@ -1,18 +1,19 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System.Collections.Generic;
 
 namespace Business.Abstract
 {
     public interface ISessionService
     {
-        List<Session> GetAll();
-        List<Session> GetByEventId(int eventId);
-        Session Get(int sessionId);
-        Session Get(int eventId, string session);
-        void Add(Session session);
-        void AddAll(Session[] session);
-        void Update(Session session);
-        void UpdateAll(Session[] session, Session[] deleteSession);
-        void Delete(int sessionId);
+        IDataResult<List<Session>> GetAll();
+        IDataResult<List<Session>> GetByEventId(int eventId);
+        IDataResult<Session> Get(int sessionId);
+        IDataResult<Session> Get(int eventId, string session);
+        IResult Add(Session session);
+        IResult AddAll(Session[] session);
+        IResult Update(Session session);
+        IResult UpdateAll(Session[] session, Session[] deleteSession);
+        IResult Delete(int sessionId);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Business.Abstract;
-using Core.Entities.Concrete;
-using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -20,11 +18,11 @@ namespace WebAPI.Controllers
             _mailService = mailService;
             _hostingEnvironment = hostingEnvironment;
         }
-
+        //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
+        ///
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
             var result = _eventService.GetAll();
             if (result.Success)
             {
@@ -36,7 +34,6 @@ namespace WebAPI.Controllers
         [HttpGet("get")]
         public IActionResult Get(int eventId)
         {
-            //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
             var result = _eventService.Get(eventId);
             if (result.Success)
             {
@@ -45,36 +42,68 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        //[HttpGet("save")]
-        //public IActionResult Save(Event evnt, Session[] sessions)
-        //{
-        //    //// Dependency chain -- bağımlılık zinciri IProductService ProductManager a ihtiyaç duyuyor. ProductManager da IProdutDal a ihtiyaç duyuyor .
-        //    var result = _eventService.Add(evnt,sessions);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        [HttpGet("sendmail")]
-        public IActionResult SendMail()
+        [HttpGet("getallbycategoryid")]
+        public IActionResult GetAllByCategoryId(int categoryId)
         {
-            string filePath = string.Format("{0}\\MailTemplate\\Register.html", _hostingEnvironment.ContentRootPath);
-            var htmlFile = System.IO.File.ReadAllText(filePath);
-            //MailRequest mailRequest = new MailRequest();
-            //mailRequest.ToEmail = "omer.besent@hotmail.com";
-            //mailRequest.Subject = "Test email";
-            //mailRequest.Body = "mail içerik";
-
-            var result = _mailService.SendRegisterEmail("omer.besent@hotmail.com", "Omer Besent", htmlFile, "#");
-
+            var result = _eventService.GetListByCategoryId(categoryId);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
+        [HttpPost("add")]
+        public IActionResult Save([FromForm] EventDto eventDto)
+        {
+            var result = _eventService.Add(eventDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("update")]
+        public IActionResult Update([FromForm] EventDto eventDto)
+        {
+            var result = _eventService.Update(eventDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(int eventId)
+        {
+            var result = _eventService.Delete(eventId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        //[HttpGet("sendmail")]
+        //public IActionResult SendMail()
+        //{
+        //    string filePath = string.Format("{0}\\MailTemplate\\Register.html", _hostingEnvironment.ContentRootPath);
+        //    var htmlFile = System.IO.File.ReadAllText(filePath);
+        //    //MailRequest mailRequest = new MailRequest();
+        //    //mailRequest.ToEmail = "omer.besent@hotmail.com";
+        //    //mailRequest.Subject = "Test email";
+        //    //mailRequest.Body = "mail içerik";
+
+        //    var result = _mailService.SendRegisterEmail("omer.besent@hotmail.com", "Omer Besent", htmlFile, "#");
+
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
 
     }
 }

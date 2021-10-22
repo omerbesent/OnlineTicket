@@ -6,16 +6,14 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfEventSelectedSeatDal : EfEntityRepositoryBase<EventSelectedSeat, OnlineTicketContext>, IEventSelectedSeatDal
     {
-        public void AddAll(EventSelectedSeat[] entitySave, EventSelectedSeat[] entityDelete)
+        public void AddAll(EventSelectedSeat[] entitySave)
         {
             using (var context = new OnlineTicketContext())
-            {
-                context.RemoveRange(entityDelete);
+            { 
                 foreach (var item in entitySave)
                 {
                     context.Add(item);
-                }
-
+                } 
                 context.SaveChanges();
             }
         }

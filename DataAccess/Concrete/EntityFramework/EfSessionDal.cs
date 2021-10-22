@@ -16,19 +16,7 @@ namespace DataAccess.Concrete.EntityFramework
                 return true;
             }
         }
-
-        public bool UpdateAll(Session[] entitySave, Session[] entityDelete)
-        {
-            using (var context = new OnlineTicketContext())
-            {
-                context.RemoveRange(entityDelete);
-                context.AddRange(entitySave);
-                context.SaveChanges();
-
-                return true;
-            }
-        }
-
+         
         public bool DeleteAll(Session[] entityDelete)
         {
             using (var context = new OnlineTicketContext())

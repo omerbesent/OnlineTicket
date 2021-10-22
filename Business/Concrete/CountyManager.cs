@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constans;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -13,32 +15,32 @@ namespace Business.Concrete
         {
             _countyDal = countyDal;
         }
-        public void Add(County county)
+        public IResult Add(County county)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(int countyId)
+        public IResult Delete(int countyId)
         {
             throw new NotImplementedException();
         }
 
-        public County Get(int countyId)
+        public IDataResult<County> Get(int countyId)
         {
             throw new NotImplementedException();
         }
 
-        public List<County> GetAll()
+        public IDataResult<List<County>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public List<County> GetListByCityId(int cityId)
-        {
-            return _countyDal.GetList(x => x.CityId == cityId);
+        public IDataResult<List<County>> GetListByCityId(int cityId)
+        { 
+            return new SuccessDataResult<List<County>>(_countyDal.GetList(x => x.CityId == cityId), Messages.CountyListed);
         }
 
-        public void Update(County county)
+        public IResult Update(County county)
         {
             throw new NotImplementedException();
         }
